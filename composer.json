@@ -1,0 +1,14 @@
+{
+    "name": "PhrantiK/helpscout-invoiceninja",
+    "description": "HelpScout app for InvoiceNinja",
+    "authors": [
+        {
+            "name": "PhrantiK"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/database": "5.7.*",
+        "helpscout/apps": "1.1.*",
+    }
+}
