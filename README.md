@@ -15,7 +15,7 @@ Finds all invoices associated with the customer email(s).
 6. Change domain to your domain
 7. Set up a custom app in Help Scout
 
-##todo
+## todo
 
 - [ ] Create customer summary
 - [ ] Update to use InvoiceNinja .env file
