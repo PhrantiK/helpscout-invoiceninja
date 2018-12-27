@@ -19,7 +19,7 @@ if ($app->isSignatureValid())
   $settings = array(
     'driver'    => getenv('DB_TYPE'),
     'host'      => getenv('DB_HOST'),
-    'port'      => '3306'
+    'port'      => '3306',
     'database'  => getenv('DB_DATABASE'),
     'username'  => getenv('DB_USERNAME'),
     'password'  => getenv('DB_PASSWORD'),
@@ -73,7 +73,7 @@ if ($app->isSignatureValid())
   ]);
 
   $html = array();
-  $html[] = '<h4>Invoices</h4>';
+  #$html[] = '<h4>Invoices</h4>';
 
   foreach($invoices as $invoice)
     {
@@ -81,7 +81,7 @@ if ($app->isSignatureValid())
       $html[] = '<table class="table-condensed ecomm-app" style="width:100%;">';
       $html[] = '<tbody>';
       $html[] = '<tr>';
-      $html[] = '<td class="num"><a href="'.$hostname.'/invoices/'.$invoice->id.'/edit" target="_blank" alt="Paid" title="Paid">'.$invoice->invoice_number.'</a></td>';
+      $html[] = '<td class="num"><a href="'.$hostname.'/invoices/'.$invoice->id.'/edit" target="_blank">'.$invoice->invoice_number.'</a></td>';
       $html[] = '<td style="text-align:right;">'.money_format('%.2n', $invoice->amount).'</td>';
       $html[] = '</tr>';
       $html[] = '<tr class="order-info">';
