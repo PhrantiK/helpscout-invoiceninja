@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-$app = new DynamicApp('YOURSECRETKEYHERE');
+$app = new DynamicApp(getenv('HS_SECRET'));
 if ($app->isSignatureValid())
 {
   $customer = $app->getCustomer();
