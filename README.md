@@ -7,7 +7,9 @@ Finds all invoices associated with the customer email(s).
 ## Install
 
 1. Clone into a folder from your InvoiceNinja public folder:
+
    git clone https://github.com/PhrantiK/helpscout-invoiceninja.git choosefoldername
+
 2. Run: `composer update` to install dependencies
 3. Generate random secret key: `date | md5sum`
 4. Put secret key in index.php
