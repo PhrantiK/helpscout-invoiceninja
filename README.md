@@ -14,7 +14,7 @@ git clone https://github.com/PhrantiK/helpscout-invoiceninja.git choosefoldernam
 
 2. Run: `composer update` to install dependencies
 3. Generate random secret key: `date | md5sum`
-4. Put secret key in index.php
+4. Add secret key into InvoiceNinja .env file: `HS_SECRET=YOURSECRETKEY`
 5. Change locale if needed (note: only tested with en-US)
 6. Set up the custom app in Help Scout with your URL & Secret key
 

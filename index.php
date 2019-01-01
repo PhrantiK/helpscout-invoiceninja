@@ -77,7 +77,7 @@ if ($app->isSignatureValid())
   ]);
 
   $html = array();
-  $html[] = '<h4>Invoices</h4>';
+  #$html[] = '<h4>Invoices</h4>';
 
   foreach($invoices as $invoice)
     {
