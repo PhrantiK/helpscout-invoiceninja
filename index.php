@@ -77,10 +77,10 @@ if ($app->isSignatureValid())
   ]);
 
   $html = array();
-  #$html[] = '<h4>Invoices</h4>';
 
   foreach($invoices as $invoice)
     {
+      $date = new DateTime($invoice->invoice_date);
       $color = $statuscolor->where('id', $invoice->invoice_status->id)->first();
       $html[] = '<table class="table-condensed ecomm-app" style="width:100%;">';
       $html[] = '<tbody>';
