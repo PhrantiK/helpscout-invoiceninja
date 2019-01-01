@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-$app = new DynamicApp('YOURSECRETKEYHERE');
+$app = new DynamicApp(getenv('HS_SECRET'));
 if ($app->isSignatureValid())
 {
   $customer = $app->getCustomer();
@@ -61,7 +61,11 @@ if ($app->isSignatureValid())
 
   $contacts = Contact::whereIn('email', $customer->getEmails())->pluck('client_id');
 
-  $invoices = Invoice::whereIn('client_id', $contacts)->with('invoice_status')->latest()->take(10)->get();
+  $invoices = Invoice::whereIn('client_id', $contacts)->with('invoice_status')->get();
+
+  $invoices = $invoices->sortByDesc('invoice_date')->take(10);
+  
+  $invoices->values()->all();
 
   $statuscolor = collect([
     ['id' => '1', 'color' => 'cancelled'],
@@ -85,7 +89,7 @@ if ($app->isSignatureValid())
       $html[] = '<td style="text-align:right;">'.money_format('%.2n', $invoice->amount).'</td>';
       $html[] = '</tr>';
       $html[] = '<tr class="order-info">';
-      $html[] = '<td class="muted">'.$invoice->created_at->toFormattedDateString().'</td>';
+      $html[] = '<td class="muted">'.$date->format('jS M, Y').'</td>';
       $html[] = '<td class="'.$color['color'].'" style="text-align:right;">'.$invoice->invoice_status->name.'</td>';
       $html[] = '</tr>';
       $html[] = '</tbody>';
