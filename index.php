@@ -85,7 +85,7 @@ if ($app->isSignatureValid())
       $html[] = '<table class="table-condensed ecomm-app" style="width:100%;">';
       $html[] = '<tbody>';
       $html[] = '<tr>';
-      $html[] = '<td class="num"><a href="'.$hostname.'/invoices/'.$invoice->id.'/edit" target="_blank">'.$invoice->invoice_number.'</a></td>';
+      $html[] = '<td class="num"><a href="'.$hostname.'/invoices/'.$invoice->public_id.'/edit" target="_blank">'.$invoice->invoice_number.'</a></td>';
       $html[] = '<td style="text-align:right;">'.money_format('%.2n', $invoice->amount).'</td>';
       $html[] = '</tr>';
       $html[] = '<tr class="order-info">';
