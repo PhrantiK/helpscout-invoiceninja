@@ -61,7 +61,7 @@ if ($app->isSignatureValid())
 
   $contacts = Contact::whereIn('email', $customer->getEmails())->pluck('client_id');
 
-  $invoices = Invoice::whereIn('client_id', $contacts)->with('invoice_status')->get();
+  $invoices = Invoice::whereIn('client_id', $contacts)->where('is_deleted', '=', 0)->with('invoice_status')->get();
 
   $invoices = $invoices->sortByDesc('invoice_date')->take(10);
   
