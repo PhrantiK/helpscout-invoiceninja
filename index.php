@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-$app = new DynamicApp(getenv('HS_SECRET'));
+$app = new DynamicApp(getenv('HS_SECRET2'));
 if ($app->isSignatureValid())
 {
   $customer = $app->getCustomer();
@@ -37,35 +37,68 @@ if ($app->isSignatureValid())
   $resolver->setDefaultConnection('default');
   \Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
 
-  class Invoice extends Model {
+  class Client extends Model {
 
-      public $timestamps = false;
+    public $timestamps = false;
+
+  }
+
+  class Contact extends Model {
+
+    public function client()
+    {
+        return $this->belongsTo('client');
+    }
+
+    public $timestamps = false;
+
+  }
+
+  class Invoice extends Model {
 
       public function invoice_status()
     {
         return $this->belongsTo('invoice_status');
     }
 
-    protected $dates = ['created_at'];
+    public $timestamps = false;
+
   }
 
   class Invoice_status extends Model {
 
       public $timestamps = false;
+
   }
 
-  class Contact extends Model {
+  $html = array();
 
-    public $timestamps = false;
+  $contacts = Contact::whereIn('email', $customer->getEmails())->with('client')->get();
+
+  if ($contacts->isEmpty()) 
+  {
+    /*
+    $html[] = '<table class="table-condensed ecomm-app" style="width:100%;">';
+    $html[] = '<tbody>';
+    $html[] = '<tr>';
+    $html[] = '<td><a href="https://google.com" class="btn">Create Client</a></td>';
+    $html[] = '</tr>';
+    $html[] = '</tbody>';
+    $html[] = '</table>';
+    */
+    $html[] = '<h4>No Invoices</h4>';
+    echo $app->getResponse($html);
   }
+  else 
+  {
 
-  $contacts = Contact::whereIn('email', $customer->getEmails())->pluck('client_id');
+  $latestcontact = $contacts->sortByDesc('created_at')->first();
 
-  $invoices = Invoice::whereIn('client_id', $contacts)->where('is_deleted', '=', 0)->with('invoice_status')->get();
+  $clid = $contacts->pluck('client_id');
+
+  $invoices = Invoice::whereIn('client_id', $clid)->where('is_deleted', '=', 0)->with('invoice_status')->get();
 
   $invoices = $invoices->sortByDesc('invoice_date')->take(10);
-  
-  $invoices->values()->all();
 
   $statuscolor = collect([
     ['id' => '1', 'color' => 'cancelled'],
@@ -76,7 +109,14 @@ if ($app->isSignatureValid())
     ['id' => '6', 'color' => 'completed'],
   ]);
 
-  $html = array();
+  $html[] = '<table class="table-condensed ecomm-app" style="width:100%;">';
+  $html[] = '<tbody>';
+  $html[] = '<tr>';
+  $html[] = '<td><a href="'.$hostname.'/clients/'.$latestcontact->client->public_id.'" class="btn">Client Portal</a></td>';
+  $html[] = '<td style="text-align:right"><a href="'.$hostname.'/invoices/create/'.$latestcontact->client->public_id.'" class="btn">New Invoice</a></td>';
+  $html[] = '</tr>';
+  $html[] = '</tbody>';
+  $html[] = '</table>';
 
   foreach($invoices as $invoice)
     {
@@ -97,6 +137,7 @@ if ($app->isSignatureValid())
 
     }
   echo $app->getResponse($html);
+  }
 }
 else
 {
